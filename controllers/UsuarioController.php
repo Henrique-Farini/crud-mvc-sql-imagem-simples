@@ -56,7 +56,7 @@ if ($acao == 'editar') {
         header('Location: index.php');
     }
     $usuario = buscarUsuario($id);
-    include '../views/editar.php';
+    include 'views/editar.php';
 }
 
 if ($acao == 'excluir') {
