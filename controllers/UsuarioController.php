@@ -45,9 +45,7 @@ if ($acao == 'editar') {
 
         if($_FILES['imagem']['name']) {
             $imagem = 'img/' . $_FILES['imagem']['name'];
-           move_uploaded_file(
-    $_FILES['imagem']['tmp_name'],
-    __DIR__ . "/.." . $imagem
+           move_uploaded_file($_FILES['imagem']['tmp_name'], __DIR__ . "/../" . $imagem
 );
             }
 
