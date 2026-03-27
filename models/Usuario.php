@@ -10,7 +10,8 @@ function listarUsuarios() {
 
 function inserirUsuario($nome, $email, $imagem, $login, $senha, $papel) {
     $con = conectar();
-    $sql = "INSERT INTO usuarios (nome, email, imagem, login, senha, papel ) VALUES ('$nome', '$email', '$imagem', 'login', 'senha', 'papel')";
+    $sql = "INSERT INTO usuarios (nome, email, imagem, login, senha, papel) 
+VALUES ('$nome', '$email', '$imagem', '$login', '$senha', '$papel')";
     mysqli_query($con, $sql);
 }
 

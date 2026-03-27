@@ -1,167 +1,232 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar Usuário</title>
-    <link rel="stylesheet" href="criar.css">
 </head>
 <style>
-        :root {
-        --primary-purple: #6366f1;
-        --secondary-purple: #4f46e5;
-        --bg-glass: rgba(255, 255, 255, 0.9);
-        --text-main: #1f2937;
-        --text-muted: #6b7280;
-        --bg-body: #f8fafc;
-    }
+   :root {
+    --primary-purple: #6366f1;
+    --secondary-purple: #4f46e5;
+    --bg-glass: rgba(255, 255, 255, 0.85);
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border-glass: rgba(255, 255, 255, 0.4);
+}
 
-    * {
-        box-sizing: border-box;
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    }
+/* Reset mais consistente */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 
-    body {
-        background: radial-gradient(circle at top right, #eeefff, #ffffff);
-        background-attachment: fixed;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        margin: 0;
-        color: var(--text-main);
-    }
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
 
+body {
+    background: radial-gradient(circle at top right, #eeefff, #ffffff);
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh; /* melhor que 100vh em mobile */
+    padding: 20px;
+    color: var(--text-main);
+}
+
+/* Container */
+.container-card {
+    background: var(--bg-glass);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    border-radius: 24px;
+
+    box-shadow: 
+        0 20px 25px -5px rgba(0,0,0,0.05), 
+        0 8px 10px -6px rgba(0,0,0,0.05);
+
+    border: 1px solid var(--border-glass);
+}
+
+/* Título */
+h2 {
+    font-weight: 800;
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+    letter-spacing: -0.025em;
+
+    background: linear-gradient(to right, var(--primary-purple), #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+/* Subtítulo */
+.subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+    display: block;
+}
+
+/* Alerta */
+.alerta {
+    background-color: #fee2e2;
+    color: #dc2626;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    border-left: 4px solid #dc2626;
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Label */
+label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-main);
+    padding-left: 4px;
+}
+
+/* Inputs */
+input,
+select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: rgba(252, 252, 253, 0.7);
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+    color: var(--text-main);
+}
+
+/* Evita zoom no iOS */
+input,
+select,
+textarea {
+    font-size: 16px;
+}
+
+/* Select custom */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");
+
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+}
+
+/* Focus acessível */
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+    background: #fff;
+}
+
+/* File input */
+input[type="file"] {
+    width: 100%;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Compatibilidade melhor */
+input[type="file"]::file-selector-button {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-right: 15px;
+    transition: 0.2s;
+    font-weight: 500;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background: #e2e8f0;
+}
+
+/* Botões */
+.btn-group {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-salvar {
+    background: var(--primary-purple);
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.btn-salvar:hover {
+    background: var(--secondary-purple);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(99, 102, 241, 0.4);
+}
+
+.btn-salvar:active {
+    transform: translateY(0);
+}
+
+/* Melhor acessibilidade (teclado) */
+.btn-salvar:focus-visible {
+    outline: 2px solid var(--primary-purple);
+    outline-offset: 2px;
+}
+
+.btn-voltar {
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    padding: 10px;
+    transition: color 0.2s;
+}
+
+.btn-voltar:hover {
+    color: var(--primary-purple);
+}
+
+/* Mobile */
+@media (max-width: 480px) {
     .container-card {
-        background: var(--bg-glass);
-        backdrop-filter: blur(10px);
-        width: 100%;
-        max-width: 450px;
-        padding: 40px;
-        border-radius: 24px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 30px 20px;
+        border-radius: 18px; /* evita ficar exagerado */
     }
-
-    h2 {
-        font-weight: 800;
-        font-size: 1.8rem;
-        margin-bottom: 8px;
-        letter-spacing: -0.025em;
-        background: linear-gradient(to right, var(--primary-purple), #a855f7);
-        -webkit-text-fill-color: transparent;
-    }
-
-    .subtitle {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        margin-bottom: 30px;
-        display: block;
-    }
-
-    .alerta {
-        background-color: #fee2e2;
-        color: #dc2626;
-        padding: 12px;
-        border-radius: 12px;
-        font-size: 0.85rem;
-        margin-bottom: 20px;
-        border-left: 4px solid #dc2626;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    label {
-        display: block;
-        font-size: 0.85rem;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: var(--text-main);
-        padding-left: 4px;
-    }
-
-    input[type="text"],
-    input[type="email"] {
-        width: 100%;
-        padding: 14px 16px;
-        border-radius: 12px;
-        border: 1px solid #e2e8f0;
-        background: #fcfcfd;
-        transition: all 0.3s ease;
-        font-size: 0.95rem;
-    }
-
-    input:focus {
-        outline: none;
-        border-color: var(--primary-purple);
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-        background: #fff;
-    }
-
-    /* Estilização Custom do Input File */
-    input[type="file"] {
-        font-size: 0.85rem;
-        color: var(--text-muted);
-    }
-
-    input[type="file"]::file-selector-button {
-        background: #f1f5f9;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-right: 15px;
-        transition: 0.3s;
-    }
-
-    input[type="file"]::file-selector-button:hover {
-        background: #e2e8f0;
-    }
-
-    .btn-group {
-        margin-top: 32px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .btn-salvar {
-        background: var(--primary-purple);
-        color: white;
-        padding: 14px;
-        border: none;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: transform 0.2s, background 0.2s;
-        box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3);
-    }
-
-    .btn-salvar:hover {
-        background: var(--secondary-purple);
-        transform: translateY(-2px);
-    }
-
-    .btn-salvar:active {
-        transform: translateY(0);
-    }
-
-    .btn-voltar {
-        text-align: center;
-        text-decoration: none;
-        color: var(--text-muted);
-        font-size: 0.85rem;
-        padding: 10px;
-        transition: color 0.2s;
-    }
-
-    .btn-voltar:hover {
-        color: var(--primary-purple);
-    }
-
+}
 </style>
 <body>
     <div class="container-card">
@@ -175,12 +240,37 @@
         <form method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="nome">Nome completo</label>
-                <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($_POST['nome'] ?? '') ?>" placeholder="Ex: João Silva" required>
+                <input type="text" id="nome" name="nome"
+                       value="<?= htmlspecialchars($_POST['nome'] ?? '') ?>"
+                       placeholder="Ex: João Silva" required>
             </div>
 
             <div class="form-group">
                 <label for="email">E-mail corporativo</label>
-                <input type="email" id="email" name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" placeholder="nome@empresa.com" required>
+                <input type="email" id="email" name="email"
+                       value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
+                       placeholder="nome@empresa.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="login">Login</label>
+                <input type="text" id="login" name="login"
+                       value="<?= htmlspecialchars($_POST['login'] ?? '') ?>"
+                       placeholder="Ex: joao.silva" required>
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" placeholder="Mínimo 6 caracteres" required>
+            </div>
+
+            <div class="form-group">
+                <label for="papel">Papel</label>
+                <select id="papel" name="papel" required>
+                    <option value="">Selecione...</option>
+                    <option value="adm" <?= (($_POST['papel'] ?? '') == 'adm') ? 'selected' : '' ?>>Administrador</option>
+                    <option value="user" <?= (($_POST['papel'] ?? '') == 'user') ? 'selected' : '' ?>>Cliente</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -190,7 +280,7 @@
 
             <div class="btn-group">
                 <button type="submit" class="btn-salvar">Finalizar Cadastro</button>
-                <a href="index.php?acao=cadastrar" class="btn-voltar">Voltar ao painel</a>
+                <a href="index.php" class="btn-voltar">Voltar ao painel</a>
             </div>
         </form>
     </div>

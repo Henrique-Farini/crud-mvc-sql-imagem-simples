@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Usuário</title>
+    <title>Editar Produto</title>
 </head>
 <style>
     :root {
@@ -33,6 +33,7 @@
         align-items: center;
         min-height: 100vh;
         color: var(--text-dark);
+        padding: 40px 20px;
     }
 
     .edit-container {
@@ -154,14 +155,14 @@
 </style>
 <body>
     <div class="edit-container">
-        <h2>Editar Usuário</h2>
+        <h2>Editar Produto</h2>
 
         <form method="POST" enctype="multipart/form-data">
 
             <div class="avatar-wrapper">
-                <?php if (!empty($usuario['imagem'])): ?>
-                    <img src="<?= htmlspecialchars($usuario['imagem'], ENT_QUOTES, 'UTF-8') ?>"
-                         class="avatar-preview" alt="Imagem do usuário">
+                <?php if (!empty($produto['imagem'])): ?>
+                    <img src="<?= htmlspecialchars($produto['imagem'], ENT_QUOTES, 'UTF-8') ?>"
+                         class="avatar-preview" alt="Imagem do produto">
                 <?php else: ?>
                     <div class="avatar-preview"
                          style="background:#e2e8f0; display:flex; align-items:center; justify-content:center; height:150px;">
@@ -178,21 +179,50 @@
             </div>
 
             <div class="form-group">
-                <label for="nome">Nome Completo</label>
+                <label for="nome">Nome do Produto</label>
                 <input type="text" id="nome" name="nome"
-                       value="<?= htmlspecialchars($usuario['nome'] ?? '') ?>"
-                       placeholder="Ex: Matheus Silva" required>
+                       value="<?= htmlspecialchars($produto['nome'] ?? '') ?>"
+                       placeholder="Ex: Pão" required>
             </div>
 
             <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" name="email"
-                       value="<?= htmlspecialchars($usuario['email'] ?? '') ?>"
-                       placeholder="email@exemplo.com" required>
+                <label for="preco">Preço</label>
+                <!-- CORRIGIDO: era type="preco" (inválido), agora type="text" -->
+                <input type="text" id="preco" name="preco"
+                       value="<?= htmlspecialchars($produto['preco'] ?? '') ?>"
+                       placeholder="R$" required>
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <input type="text" id="descricao" name="descricao"
+                       value="<?= htmlspecialchars($produto['descricao'] ?? '') ?>"
+                       placeholder="Ex: Pão de forma integral" required>
+            </div>
+
+            <div class="form-group">
+                <label for="fornecedor">Fornecedor</label>
+                <input type="text" id="fornecedor" name="fornecedor"
+                       value="<?= htmlspecialchars($produto['fornecedor'] ?? '') ?>"
+                       placeholder="" required>
+            </div>
+
+            <div class="form-group">
+                <label for="quantidade">Quantidade</label>
+                <input type="text" id="quantidade" name="quantidade"
+                       value="<?= htmlspecialchars($produto['quantidade'] ?? '') ?>"
+                       placeholder="" required>
+            </div>
+
+            <div class="form-group">
+                <label for="fabricante">Fabricante</label>
+                <input type="text" id="fabricante" name="fabricante"
+                       value="<?= htmlspecialchars($produto['fabricante'] ?? '') ?>"
+                       placeholder="" required>
             </div>
 
             <input type="hidden" name="imagem_atual"
-                   value="<?= htmlspecialchars($usuario['imagem'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                   value="<?= htmlspecialchars($produto['imagem'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
 
             <button type="submit" class="btn-atualizar">Salvar Alterações</button>
         </form>

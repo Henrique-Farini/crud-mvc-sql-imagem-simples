@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Usuários</title>
+    <title>Lista de Produtos</title>
 
     <style>
         :root {
@@ -150,35 +150,41 @@
 <body>
 <div class="container">
     <div class="header-area">
-        <h2>Usuários</h2>
-        <a href="index.php?acao=criar" class="btn-create">+ Adicionar Usuário</a>
+        <h2>Produtos</h2>
+        <a href="index.php?acao=criar_produto" class="btn-create">+ Adicionar Produto</a>
     </div>
 
     <table>
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Usuário</th>
+                <th>Produto</th>
                 <th>Imagem</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            <?php if (!empty($usuarios)): ?>
-                <?php foreach ($usuarios as $u): ?>
+            <?php if (!empty($produtos)): ?>
+                <?php foreach ($produtos as $p): ?>
                 <tr>
                     <td style="color:var(--text-muted); font-weight:600;">
-                        #<?= htmlspecialchars($u['id'], ENT_QUOTES, 'UTF-8') ?>
+                        <!-- CORRIGIDO: era $u['id'], agora $p['id'] -->
+                        #<?= htmlspecialchars($p['id'], ENT_QUOTES, 'UTF-8') ?>
                     </td>
 
                     <td>
-                        <div style="font-weight:700;"><?= htmlspecialchars($u['nome'], ENT_QUOTES, 'UTF-8') ?></div>
-                        <div style="font-size:0.8rem; color:var(--text-muted);"><?= htmlspecialchars($u['email'], ENT_QUOTES, 'UTF-8') ?></div>
+                        <!-- CORRIGIDO: era $u['nome'], agora $p['nome'] -->
+                        <div style="font-weight:700;"><?= htmlspecialchars($p['nome'], ENT_QUOTES, 'UTF-8') ?></div>
+                        <!-- CORRIGIDO: era $p['email'] (produtos não têm email), agora exibe preço e descrição -->
+                        <div style="font-size:0.8rem; color:var(--text-muted);">
+                            R$ <?= htmlspecialchars($p['preco'], ENT_QUOTES, 'UTF-8') ?>
+                            &mdash; <?= htmlspecialchars($p['descricao'], ENT_QUOTES, 'UTF-8') ?>
+                        </div>
                     </td>
 
                     <td style="vertical-align:middle;">
-                        <?php if (!empty($u['imagem'])): ?>
-                            <img src="<?= htmlspecialchars($u['imagem'], ENT_QUOTES, 'UTF-8') ?>" class="user-img">
+                        <?php if (!empty($p['imagem'])): ?>
+                            <img src="<?= htmlspecialchars($p['imagem'], ENT_QUOTES, 'UTF-8') ?>" class="user-img">
                         <?php else: ?>
                             <div class="no-img">Sem Foto</div>
                         <?php endif; ?>
@@ -186,10 +192,10 @@
 
                     <td>
                         <div class="actions">
-                            <a href="index.php?acao=editar&id=<?= $u['id'] ?>" class="btn-action btn-edit">Editar</a>
-                            <a href="index.php?acao=excluir&id=<?= $u['id'] ?>"
+                            <a href="index.php?acao=editar_produto&id=<?= $p['id'] ?>" class="btn-action btn-edit">Editar</a>
+                            <a href="index.php?acao=excluir_produto&id=<?= $p['id'] ?>"
                                class="btn-action btn-delete"
-                               onclick="return confirm('Excluir este usuário permanentemente?')">
+                               onclick="return confirm('Excluir este produto permanentemente?')">
                                Excluir
                             </a>
                         </div>
@@ -198,7 +204,7 @@
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="4" style="text-align:center; color:var(--text-muted);">Nenhum usuário encontrado.</td>
+                    <td colspan="4" style="text-align:center; color:var(--text-muted);">Nenhum produto encontrado.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
