@@ -42,167 +42,105 @@ if (!isset($_SESSION['usuario'])) {
 /* ================= CONTROLE DE ACESSO ================= */
 $papel = $_SESSION['papel'] ?? 'user';
 
+// Ações restritas ao administrador — cliente não pode acessar mesmo digitando a URL
 $acoes_adm = ['criar', 'editar', 'excluir', 'criar_produto', 'editar_produto', 'excluir_produto'];
 
 if (in_array($acao, $acoes_adm) && $papel !== 'adm') {
     http_response_code(403);
-    include "views/acesso_negado.php";
+    include "views/acessoNegado.php";
     exit;
 }
 
+// Cliente sem ação: redireciona direto para produtos
 if ($papel === 'user' && $acao === '') {
     header("Location: index.php?acao=listar_produtos");
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sistema</title>
-
-<style>
-:root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --bg: #f8fafc;
-    --text: #1f2937;
-    --muted: #6b7280;
-}
-
-/* RESET */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Inter', system-ui, sans-serif;
-}
-
-body {
-    background: var(--bg);
-    color: var(--text);
-}
-
-/* TOPBAR */
-.topbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 64px;
-    padding: 0 32px;
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema</title>
+    <style>
+        body {
+    background: #f8fafc;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-
-    border-bottom: 1px solid #e2e8f0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-
-    z-index: 999;
+    flex-direction: column; /* 🔥 ISSO RESOLVE */
 }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
 
-.topbar-brand {
-    font-weight: 800;
-    font-size: 1.2rem;
-    background: linear-gradient(to right, var(--primary), #a855f7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+        body { background: #f8fafc; }
 
-.topbar-nav {
-    display: flex;
-    gap: 8px;
-}
+        .topbar {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 32px;
+            height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-.topbar-nav a {
-    text-decoration: none;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 10px;
-    color: var(--muted);
-    transition: 0.2s;
-}
+        .topbar-brand {
+            font-weight: 800;
+            font-size: 1.1rem;
+            background: linear-gradient(to right, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
 
-.topbar-nav a:hover {
-    background: #f1f5f9;
-    color: var(--text);
-}
+        .topbar-nav { display: flex; align-items: center; gap: 6px; }
 
-.topbar-nav a.active {
-    background: #ede9fe;
-    color: #6d28d9;
-}
+        .topbar-nav a {
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            padding: 7px 16px;
+            border-radius: 8px;
+            transition: 0.2s;
+            color: #6b7280;
+        }
 
-.topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
+        .topbar-nav a:hover  { background: #f1f5f9; color: #1f2937; }
+        .topbar-nav a.active { background: #ede9fe; color: #6d28d9; }
 
-.topbar-user {
-    font-size: 0.85rem;
-    color: var(--muted);
-}
+        .topbar-right { display: flex; align-items: center; gap: 12px; }
 
-.topbar-user strong {
-    color: var(--text);
-}
+        .topbar-user { font-size: 0.85rem; color: #6b7280; }
+        .topbar-user strong { color: #1f2937; }
 
-.badge {
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 999px;
-}
+        .badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 99px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-.badge-adm {
-    background: #ede9fe;
-    color: #6d28d9;
-}
+        .badge-adm  { background: #ede9fe; color: #6d28d9; }
+        .badge-user { background: #dcfce7; color: #15803d; }
 
-.badge-user {
-    background: #dcfce7;
-    color: #15803d;
-}
+        .btn-logout {
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ef4444;
+            padding: 7px 14px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
 
-.btn-logout {
-    text-decoration: none;
-    color: #ef4444;
-    padding: 7px 14px;
-    border-radius: 8px;
-}
-
-.btn-logout:hover {
-    background: #fee2e2;
-}
-
-/* 🔥 ESSENCIAL */
-.main-content {
-    margin-top: 64px;
-    padding: 24px;
-}
-
-/* RESPONSIVO */
-@media (max-width: 768px) {
-    .topbar {
-        padding: 0 16px;
-    }
-
-    .topbar-user {
-        display: none;
-    }
-}
-</style>
+        .btn-logout:hover { background: #fee2e2; }
+    </style>
 </head>
-
 <body>
 
 <nav class="topbar">
@@ -215,7 +153,6 @@ body {
                 Usuários
             </a>
         <?php endif; ?>
-
         <a href="index.php?acao=listar_produtos"
            class="<?= str_contains($acao, 'produto') ? 'active' : '' ?>">
             Produtos
@@ -226,27 +163,21 @@ body {
         <span class="topbar-user">
             Olá, <strong><?= htmlspecialchars($_SESSION['usuario'], ENT_QUOTES, 'UTF-8') ?></strong>
         </span>
-
         <span class="badge <?= $papel === 'adm' ? 'badge-adm' : 'badge-user' ?>">
             <?= $papel === 'adm' ? 'Admin' : 'Cliente' ?>
         </span>
-
         <a href="index.php?acao=logout" class="btn-logout">Sair</a>
     </div>
 </nav>
 
-<!-- 🔥 AQUI ESTÁ A CORREÇÃO -->
-<div class="main-content">
-
 <?php
+/* ================= ROTEAMENTO ================= */
 if (str_contains($acao, 'produto') || $papel === 'user') {
     include "controllers/ProdutoController.php";
 } else {
     include "controllers/UsuarioController.php";
 }
 ?>
-
-</div>
 
 </body>
 </html>
